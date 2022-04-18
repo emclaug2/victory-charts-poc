@@ -226,7 +226,7 @@ const App = (): JSX.Element => {
                                              marginRight: 10,
                                              axis: {stroke: "transparent"},
                                          }}
-                                         tickFormat={(t) => `${(t * maximaC1).toFixed(4)}M%`} />
+                                         tickFormat={(t) => `${((t * (maximaC1-minimaC1)) + minimaC1).toFixed(4)}M%`} />
                             <VictoryLine data={filteredDataC1}
                                          animate={{
                                              duration: 2000,
