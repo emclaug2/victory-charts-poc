@@ -99,135 +99,81 @@ const App = (): JSX.Element => {
     });
     xTickValues = xTickValues.filter((d, i) => i % 200 === 0);
 
-    const anchors = ['end', 'end', 'start'];
-    const colors = ['black', 'red', 'blue'];
-
     return (
         <ThemeProvider theme={BLUIThemes.blue}>
             <SafeAreaProvider>
                 <Header title={'Brightlayer UI React Native'} />
                 <SafeAreaView style={defaultStyles.content}>
                     <ScrollView styles={styles.parent} contentInsetAdjustmentBehavior="automatic">
-                        {isSelected && (
-                            <VictoryChart
-                                theme={BLUIVictoryChartsTheme}
-                                containerComponent={<VictoryVoronoiContainer />}
-                                width={400}
-                                height={500}
-                                padding={{
-                                    top: 64,
-                                    bottom: 64,
-                                    left: 120,
-                                    right: 64,
+                        <VictoryChart
+                            theme={BLUIVictoryChartsTheme}
+                            containerComponent={<VictoryVoronoiContainer />}
+                            width={400}
+                            height={500}
+                            padding={{
+                                top: 64,
+                                bottom: 64,
+                                left: 120,
+                                right: 64,
+                            }}
+                        >
+                            <VictoryAxis
+                                tickValues={xTickValues}
+                                tickFormat={(x) => `${new Date(x).getDate()}. ${monthNames[new Date(x).getMonth()]}`}
+                            />
+                            <VictoryAxis
+                                dependentAxis
+                                tickCount={10}
+                                offsetX={80}
+                                style={{
+                                    marginRight: 10,
+                                    axis: { stroke: 'transparent' },
                                 }}
-                            >
-                                <VictoryAxis
-                                    tickValues={xTickValues}
-                                    tickFormat={(x) =>
-                                        `${new Date(x).getDate()}. ${monthNames[new Date(x).getMonth()]}`
-                                    }
-                                />
-                                <VictoryAxis
-                                    dependentAxis
-                                    tickCount={10}
-                                    offsetX={80}
-                                    style={{
-                                        marginRight: 10,
-                                        axis: { stroke: 'transparent' },
-                                    }}
-                                    tickFormat={(t) => `${(t * (maximaC1 - minimaC1) + minimaC1).toFixed(3)}%`}
-                                />
-                                <VictoryLine
-                                    data={filteredDataC1}
-                                    animate={{
-                                        duration: 2000,
-                                        onLoad: { duration: 2000 },
-                                    }}
-                                    style={{
-                                        data: { stroke: 'orange' },
-                                    }}
-                                    labels={({ datum }) => `Temperature: ${parseFloat(datum.value).toFixed(2)}°F`}
-                                    labelComponent={<VictoryTooltip renderInPortal={false} />}
-                                    x="time"
-                                    // normalize data
-                                    y={(datum) => {
-                                        return (datum.value - minimaC1) / (maximaC1 - minimaC1);
-                                    }}
-                                />
-
-                                <VictoryAxis
-                                    dependentAxis
-                                    tickCount={10}
-                                    tickFormat={(t) => `${Math.round(t * maximaC2)}°F`}
-                                />
-                                <VictoryLine
-                                    data={filteredDataC2}
-                                    animate={{
-                                        duration: 2000,
-                                        onLoad: { duration: 2000 },
-                                    }}
-                                    style={{
-                                        data: { stroke: '#269af4' },
-                                    }}
-                                    labels={({ datum }) => `Temperature: ${parseFloat(datum.value).toFixed(2)}°F`}
-                                    labelComponent={<VictoryTooltip renderInPortal={false} />}
-                                    x="time"
-                                    // normalize data
-                                    y={(datum) => datum.value / maximaC2}
-                                />
-                            </VictoryChart>
-                        )}
-
-                        {!isSelected && (
-                            <VictoryChart
-                                theme={BLUIVictoryChartsTheme}
-                                containerComponent={<VictoryVoronoiContainer />}
-                                width={400}
-                                height={500}
-                                padding={{
-                                    top: 64,
-                                    bottom: 64,
-                                    left: 96,
-                                    right: 64,
+                                tickFormat={(t) => `${(t * (maximaC1 - minimaC1) + minimaC1).toFixed(3)}%`}
+                            />
+                            <VictoryLine
+                                data={filteredDataC1}
+                                animate={{
+                                    duration: 2000,
+                                    onLoad: { duration: 2000 },
                                 }}
-                            >
-                                <VictoryAxis
-                                    tickValues={xTickValues}
-                                    tickFormat={(x) =>
-                                        `${new Date(x).getDate()}. ${monthNames[new Date(x).getMonth()]}`
-                                    }
-                                />
+                                style={{
+                                    data: { stroke: 'orange' },
+                                }}
+                                labels={({ datum }) => `Temperature: ${parseFloat(datum.value).toFixed(2)}°F`}
+                                labelComponent={<VictoryTooltip renderInPortal={false} />}
+                                x="time"
+                                // normalize data
+                                y={(datum) => {
+                                    return (datum.value - minimaC1) / (maximaC1 - minimaC1);
+                                }}
+                            />
 
-                                <VictoryAxis
-                                    dependentAxis
-                                    tickCount={10}
-                                    offsetX={100}
-                                    style={{
-                                        marginRight: 10,
-                                        axis: { stroke: 'transparent' },
-                                    }}
-                                    tickFormat={(t) => `${(t * (maximaC1 - minimaC1) + minimaC1).toFixed(3)}%`}
-                                />
-                                <VictoryLine
-                                    data={filteredDataC1}
-                                    animate={{
-                                        duration: 2000,
-                                        onLoad: { duration: 2000 },
-                                    }}
-                                    style={{
-                                        data: { stroke: 'orange' },
-                                    }}
-                                    labels={({ datum }) => `Temperature: ${parseFloat(datum.value).toFixed(2)}°F`}
-                                    labelComponent={<VictoryTooltip renderInPortal={false} />}
-                                    x="time"
-                                    // normalize data
-                                    y={(datum) => {
-                                        return (datum.value - minimaC1) / (maximaC1 - minimaC1);
-                                    }}
-                                />
-                            </VictoryChart>
-                        )}
-
+                            {isSelected && (
+                                <View>
+                                    <VictoryAxis
+                                        dependentAxis
+                                        tickCount={10}
+                                        tickFormat={(t) => `${Math.round(t * maximaC2)}°F`}
+                                    />
+                                    <VictoryLine
+                                        data={filteredDataC2}
+                                        animate={{
+                                            duration: 2000,
+                                            onLoad: { duration: 2000 },
+                                        }}
+                                        style={{
+                                            data: { stroke: '#269af4' },
+                                        }}
+                                        labels={({ datum }) => `Temperature: ${parseFloat(datum.value).toFixed(2)}°F`}
+                                        labelComponent={<VictoryTooltip renderInPortal={false} />}
+                                        x="time"
+                                        // normalize data
+                                        y={(datum) => datum.value / maximaC2}
+                                    />
+                                </View>
+                            )}
+                        </VictoryChart>
                         <CheckBox
                             onClick={() => {
                                 setSelection(!isSelected);
